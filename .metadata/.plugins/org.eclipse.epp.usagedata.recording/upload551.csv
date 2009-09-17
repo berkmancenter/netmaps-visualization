@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+activated,editor,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor,1245427162076
+executed,command,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.go.to.definition,1245427162099
+activated,editor,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor,1245427173776
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1245427177637
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245427183277
+activated,editor,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor,1245427198599
+activated,editor,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor,1245427201318
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1245427218601
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1245427225860
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineStart,1245427239436
+no handler,command,org.eclipse.datatools.sqltools.result,,org.eclipse.datatools.sqltools.result.removeAllInstances,1245427240083
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.select.lineEnd,1245427240845
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.cut,1245427242089
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.paste,1245427242408
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineStart,1245427244200
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.paste,1245427244682
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427267809
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427268318
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427268356
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427268395
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427268422
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427268445
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427268464
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427268492
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245427268528

@@ -1,0 +1,10 @@
+what,kind,bundleId,bundleVersion,description,time
+stopped,bundle,org.eclipse.datatools.sqltools.routineeditor,1.0.0.v200807211830,org.eclipse.datatools.sqltools.routineeditor,1253220395733
+stopped,bundle,org.eclipse.datatools.sqltools.sqlbuilder,1.0.0.v200901280650,org.eclipse.datatools.sqltools.sqlbuilder,1253220395734
+stopped,bundle,org.eclipse.datatools.sqltools.sqlscrapbook,1.0.0.v200901151810,org.eclipse.datatools.sqltools.sqlscrapbook,1253220395735
+stopped,bundle,org.eclipse.datatools.sqltools.sqleditor,1.0.0.v200901220945,org.eclipse.datatools.sqltools.sqleditor,1253220395735
+stopped,bundle,org.eclipse.datatools.enablement.sybase.asa,1.0.1.v200901150020,org.eclipse.datatools.enablement.sybase.asa,1253220395736
+stopped,bundle,org.eclipse.datatools.enablement.sybase.asa.models,1.0.0.v200805152355,org.eclipse.datatools.enablement.sybase.asa.models,1253220395736
+stopped,bundle,org.eclipse.datatools.enablement.sybase.ase.models,1.0.1.v200805152355,org.eclipse.datatools.enablement.sybase.ase.models,1253220395757
+stopped,bundle,org.eclipse.datatools.enablement.sybase.ui,1.0.0.v20081212,org.eclipse.datatools.enablement.sybase.ui,1253220395760
+stopped,bundle,org.eclipse.datatools.enablement.sybase,1.0.1.v200805310538,org.eclipse.datatools.enablement.sybase,1253220395760

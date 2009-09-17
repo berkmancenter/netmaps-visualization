@@ -1,0 +1,623 @@
+package {
+	
+	import flare.analytics.graph.ShortestPaths;
+	import flare.data.converters.JSONConverter;
+	import flare.display.TextSprite;
+	import flare.query.methods.update;
+	import flare.vis.Visualization;
+	import flare.vis.controls.ClickControl;
+	import flare.vis.controls.HoverControl;
+	import flare.vis.data.Data;
+	import flare.vis.data.EdgeSprite;
+	import flare.vis.data.NodeSprite;
+	import flare.vis.events.SelectionEvent;
+	import flare.vis.operator.layout.CircleLayout;
+	
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.filters.DropShadowFilter;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.utils.Dictionary;
+	
+	[SWF(backgroundColor="#ffffff", width="800", height="800", frameRate="30")]
+	public class asn_visualization extends Sprite
+	{
+		private var _bar:ProgressBar;
+		private var vis:Visualization;
+		private var _detail:TextSprite;
+		private var _node_click_behavior_toggle:TextSprite;
+		
+		private var _edges_toogle:TextSprite;
+		private var _path_type_toogle:TextSprite;
+		private var _layout_format_toogle:TextSprite;
+		
+		private var node_click_behavior:uint = ON_CLICK_SHOW_PATH_TO_REST_OF_THE_WORLD;
+		
+		private static const ON_CLICK_SHOW_PATH_TO_REST_OF_THE_WORLD:uint=1;
+		private static const ON_CLICK_SHOW_PARENTS_AND_CHILDREN:uint=2;		
+		
+		private var layout_format:uint=CIRCLE_LAYOUT;
+		
+		private static const CIRCLE_LAYOUT:uint = 1;
+		private static const RADIAL_LAYOUT:uint = 2;		
+		
+		private static const DEFAULT_DETAIL_TEXT:String = "Mouse over a node to see detailed information";		
+		private var _default_edge_line_color:uint = 0XFFCCCCCC;
+		private var _default_node_fill_color:uint = 0XFFCCCCCC;
+		private var _default_node_line_color:uint = 0XFF000000;
+
+		private var _clicked_node_color:uint = 0XFF0000FF;
+		
+		private var rest_of_world_node:NodeSprite = null;
+		
+		private var show_edges:Boolean = true;
+		var clicked_node:NodeSprite = null;		
+				
+		private function get_json_url():String
+		{
+			var json_url:String    = root.loaderInfo.parameters.json_url;
+
+			if (json_url == null)
+			{
+				json_url = "http://localhost/asn_web_graphs/country_json_summary.php/?cc=CN";
+			}
+		
+			return json_url;			
+		}
+		
+		public function asn_visualization()
+		{
+				// create progress bar
+			addChild(_bar = new ProgressBar());
+			_bar.bar.filters = [new DropShadowFilter(1)];
+			
+			// load data file
+			var ldr:URLLoader = new URLLoader(new URLRequest(get_json_url()));
+			_bar.loadURL(ldr, function():void {
+				var jsc:JSONConverter = new JSONConverter();
+				var arr:Array = jsc.parse(ldr.data, null);
+
+				var data:Data = buildData(arr);
+	            visualize(data);
+	            _bar = null;
+			});
+		}
+		
+		public function visualize(data:Data):void 
+		{
+			vis = new Visualization(data);
+/*			vis.bounds.x = bounds.x;
+			vis.bounds.y = bounds.y + (0.06 * bounds.height);
+			
+			vis.bounds.width = bounds.width;
+			vis.bounds.height = bounds.height - (0.10 * bounds.height);
+		
+			
+			vis.operators.add(opt[idx].op);
+			vis.setOperator("nodes", new PropertyEncoder(opt[idx].nodes, "nodes"));
+			vis.setOperator("edges", new PropertyEncoder(opt[idx].edges, "edges"));
+			
+			*/
+			
+			vis.controls.add(new HoverControl(NodeSprite,
+				// by default, move highlighted items to front
+				HoverControl.MOVE_AND_RETURN,
+				// highlight node border on mouse over
+				function(e:SelectionEvent):void {
+					//node.lineWidth = 2;
+					e.node.lineColor = 0x88ff00FF;
+				},
+				// remove highlight on mouse out
+				function(e:SelectionEvent):void {
+					//node.lineWidth = 0;
+					e.node.lineColor = _default_node_line_color;
+				}));
+			
+			
+			
+			vis.controls.add(new ClickControl (NodeSprite,
+			1,
+			function(evt:SelectionEvent):void {
+				evt.node.lineColor = 0xFFFF00cc;		
+				evt.node.fillColor = 0XFF00FF00;
+				
+				restore_edges_color();
+				dim_edges_color();
+				restore_nodes_color();
+				
+				if (clicked_node)
+				{
+					unhighlightNode(clicked_node);					
+				}	
+				clicked_node = evt.node;
+				
+				handleClickedNode(clicked_node);				
+							},
+			function(evt:SelectionEvent):void {
+				evt.node.lineColor = 0xFFFF0Fcc;	
+				evt.node.fillColor = 0XFF00FF00;
+				unhighlightNode(clicked_node);
+				restore_edges_color();
+				restore_nodes_color();
+				clicked_node=null;
+				vis.update(); 	 
+			}));
+				
+			// add mouse-over details
+			vis.controls.add(new HoverControl(NodeSprite,
+				HoverControl.DONT_MOVE,
+				function(evt:SelectionEvent):void {
+					_detail.text = get_asn_summary_string(evt.node);
+				},
+				function(evt:SelectionEvent):void {
+					_detail.text = DEFAULT_DETAIL_TEXT;
+				}
+			));
+	
+			//vis.controls.add(opt[idx].ctrl);
+			
+			//addDetail();
+
+			updateOperators();
+			
+			vis.continuousUpdates = false;
+			vis.update();
+			
+			addDetail();
+			addExplanation();
+			addButtons();
+			
+			addChild(vis);
+			layout();
+			
+		}
+		
+		private function updateOperators()
+		{		
+			vis.operators.clear();	
+			
+			if (layout_format==CIRCLE_LAYOUT)
+			{		
+			var circle_layout:CircleLayout = new CircleLayout("depth", null, true);
+			 
+			vis.operators.add(circle_layout);
+			}
+			else
+			if (layout_format==RADIAL_LAYOUT)
+			{
+			var circle_layout:CircleLayout = new CircleLayout("depth", null, true);
+			 
+			vis.operators.add(circle_layout);
+			CircleLayout(vis.operators.last).startRadiusFraction = 3/5;
+			// bundle edges to route along the tree structure
+			//vis.operators.add(new BundledEdgeRouter(0.95));
+			// set the edge alpha values
+			// longer edge, lighter alpha: 1/(2*numCtrlPoints)
+			 /* vis.operators.add(new PropertyEncoder(
+				{alpha: div(1,"points.length")}, Data.EDGES));
+				*/
+
+				
+			}
+			vis.bounds.x = 0;
+			vis.bounds.y = 0;
+		}
+
+		private function highlightShortestPath(node:NodeSprite)
+		{
+			var sp:ShortestPaths = new ShortestPaths();		 
+			 sp.calculate(vis.data,node);
+			 var sp_shortest_to:Array = sp.getShortestPathTo(rest_of_world_node);
+			 
+			 var prev_node:NodeSprite;
+			
+			var x:int; 			
+     		if (node.data['asn'] == '21341')
+     		{
+     			x++;
+     			x--;     				
+     		}
+     		
+			 for each (var child_node:NodeSprite in sp_shortest_to) {
+			 
+			 if (child_node != node) {
+			  	var e:EdgeSprite = findEdgeBetweenNodes(prev_node, child_node);
+			  	e.lineColor = 0xff00ff00;
+			  	child_node.fillColor=0xff00ff00;
+			 }
+			 prev_node = child_node;
+		}
+		}
+		
+		//The flare library should really have this API
+		private function findEdgeBetweenNodes(source_node:NodeSprite, dest_node:NodeSprite):EdgeSprite
+		{
+			var ret:EdgeSprite = null;
+			
+			source_node.visitEdges(function(e:EdgeSprite):void {
+				if ((e.source==source_node) && (e.target==dest_node) )
+				{
+					ret = e;
+				}
+			}, NodeSprite.OUT_LINKS);
+			
+			//source_node._inEdges;
+			
+			return ret;
+			
+			source_node.getOutEdge(1);
+		}
+		
+		private function highlightNode(node:NodeSprite):void
+		{			 	
+				node.visitEdges(function(e:EdgeSprite):void {
+					e.alpha = 0.5;
+					e.lineColor = 0xff00ff00;
+					//e.source.props.label.color = 0x00cc00;
+					vis.marks.setChildIndex(e, vis.marks.numChildren-1);
+					}, NodeSprite.IN_LINKS);
+
+			node.visitNodes(function(n:NodeSprite):void {
+				n.fillColor = 0xff00ff00;
+			}, NodeSprite.IN_LINKS);
+					
+			// highlight links the focus depends on in red
+			node.visitEdges(function(e:EdgeSprite):void {
+				e.alpha = 0.5;
+				e.lineColor = 0xffff0000;
+				//e.target.props.label.color = 0xff0000;
+				vis.marks.setChildIndex(e, vis.marks.numChildren-1);
+			}, NodeSprite.OUT_LINKS);
+			
+			node.visitNodes(function(n:NodeSprite):void {
+				n.fillColor = 0xffff0000;
+			}, NodeSprite.OUT_LINKS);
+			
+				vis.update(); 
+		}
+		
+		private function restore_edges_color():void
+		{			
+			for each (var _edge:EdgeSprite in vis.data.edges)
+			{
+				_edge.lineColor = _default_edge_line_color;
+			}			
+		}
+	
+		private function dim_edges_color():void
+		{			
+			for each (var _edge:EdgeSprite in vis.data.edges)
+			{
+				//Update the alpha channle to lineColor
+				var dimmed_color:uint;
+				var new_alpha_value:uint = 0X44000000;
+				dimmed_color = _edge.lineColor;
+				dimmed_color &= 0X00FFFFFF;
+				dimmed_color |= new_alpha_value;
+				_edge.lineColor = dimmed_color;
+			}			
+		}
+		
+		private function restore_nodes_color():void
+		{			
+			for each (var _node:NodeSprite in vis.data.nodes)
+			{
+				_node.fillColor = _default_node_fill_color;
+				_node.lineColor = _default_node_line_color;
+			}			
+		}
+		private function hideEdges():void
+		{			
+			for each (var _edge:EdgeSprite in vis.data.edges)
+			{
+				//_edge.lineColor = 0X00FFFFFF;
+				_edge.visible=false;
+				
+			}
+			
+			vis.update();			
+		}
+		
+		private function showEdges():void
+		{			
+			for each (var _edge:EdgeSprite in vis.data.edges)
+			{
+				//_edge.lineColor = 0X00FFFFFF;
+				_edge.visible=true;
+				
+			}
+			
+			vis.update();			
+		}
+		
+			private function unhighlightNode(node:NodeSprite):void
+		{	
+				node.visitEdges(function(e:EdgeSprite):void {
+					e.alpha = 0.5;
+					e.lineColor = _default_edge_line_color;
+					//e.source.props.label.color = 0x00cc00;
+					vis.marks.setChildIndex(e, vis.marks.numChildren-1);
+					}, NodeSprite.IN_LINKS);
+					
+			// highlight links the focus depends on in red
+			node.visitEdges(function(e:EdgeSprite):void {
+				e.alpha = 0.5;
+				e.lineColor = _default_edge_line_color;
+				//e.target.props.label.color = 0xff0000;
+				vis.marks.setChildIndex(e, vis.marks.numChildren-1);
+			}, NodeSprite.OUT_LINKS);
+			
+			node.fillColor = _default_node_fill_color;
+			node.lineColor = 0XFF000000;
+			
+			node.visitNodes(function(n:NodeSprite):void {
+				n.fillColor = _default_node_fill_color;
+			});
+			
+				vis.update(); 
+		}
+		
+		
+			private function addDetail():void
+		{	
+			_detail = new TextSprite("", null, TextSprite.DEVICE);
+			_detail.textField.multiline = true;
+			_detail.htmlText = DEFAULT_DETAIL_TEXT;			
+
+			//vis.addChild(_detail);
+			//_detail.height = _detail.height + 100;
+			addChild(_detail);
+		}
+		
+		private function addExplanation():void
+		{	
+	
+		}
+		
+		private function addButtons():void
+		{
+			_edges_toogle = new TextSprite("hide edges");
+			_edges_toogle.buttonMode = true;		
+			
+			_edges_toogle.addEventListener(MouseEvent.CLICK,
+                function(evt:MouseEvent):void {
+                	if (show_edges)
+                	{
+                		hideEdges();
+                	}                 	
+                 	else
+                 	{
+                 		showEdges(); 
+                 	}
+                 	
+                 	show_edges = ! show_edges;
+                 	updateEdgeToogleText();
+                }
+            );
+            
+            
+            updateEdgeToogleText();
+                       
+			addChild(_edges_toogle);
+			
+			_node_click_behavior_toggle = new TextSprite("", null, TextSprite.DEVICE);
+			_node_click_behavior_toggle.textField.multiline = true;
+			_node_click_behavior_toggle.buttonMode = true;
+			
+			_node_click_behavior_toggle.addEventListener(MouseEvent.CLICK,
+                function(evt:MouseEvent):void {
+                	if (node_click_behavior == ON_CLICK_SHOW_PARENTS_AND_CHILDREN)
+                	{
+                		node_click_behavior = ON_CLICK_SHOW_PATH_TO_REST_OF_THE_WORLD;
+                	}                 	
+                 	else if (node_click_behavior == ON_CLICK_SHOW_PATH_TO_REST_OF_THE_WORLD)
+                 	{
+                 		node_click_behavior = ON_CLICK_SHOW_PARENTS_AND_CHILDREN; 
+                 	}
+                 	
+                 	if (clicked_node)
+                 	{
+                 		handleClickedNode(clicked_node);
+                 	}
+                 	
+                 	updateNodeClickBehaviorText();
+                }
+            );
+            
+            updateNodeClickBehaviorText();
+			addChild(_node_click_behavior_toggle);
+						
+			_layout_format_toogle = new TextSprite("", null, TextSprite.DEVICE);
+			_layout_format_toogle.textField.multiline = true;
+			_layout_format_toogle.buttonMode = true;
+			
+			_layout_format_toogle.addEventListener(MouseEvent.CLICK,
+                function(evt:MouseEvent):void {
+                	if (layout_format == CIRCLE_LAYOUT)
+                	{
+                		layout_format = RADIAL_LAYOUT;
+                	}                 	
+                 	else if (node_click_behavior == RADIAL_LAYOUT)
+                 	{
+                 		layout_format = CIRCLE_LAYOUT; 
+                 	}
+                 	
+                 	updateOperators();
+                 	updateLayoutFormatText();
+                 	vis.update();
+                }
+            );
+			updateLayoutFormatText();
+			
+			addChild(_layout_format_toogle);
+			//vis.addChild(_detail);
+			//_detail.height = _detail.height + 100;
+
+		}
+		
+		private function updateNodeClickBehaviorText():void
+		{
+			if (node_click_behavior == ON_CLICK_SHOW_PARENTS_AND_CHILDREN)
+            {
+              		_node_click_behavior_toggle.text = 
+              			"Showing parent and child links when nodes are clicked.\nClick here to toggle to see path to the wilder internet instead";
+            }                 	
+            else if (node_click_behavior == ON_CLICK_SHOW_PATH_TO_REST_OF_THE_WORLD)
+            {
+              		_node_click_behavior_toggle.text = 
+              			"Showing path to the wilder internet when nodes are clicked.\nClick here to toggle to see parent and child links instead";
+            }				            
+		}
+		
+		private function updateLayoutFormatText():void
+		{
+			if (layout_format == CIRCLE_LAYOUT)
+            {
+              		_layout_format_toogle.text = 
+              			"Showing circle layout. Click here to switch to radial";
+            }                 	
+            else if (layout_format == RADIAL_LAYOUT)
+            {
+              		_layout_format_toogle.text = 
+              			"Showing radial layout. Click here to switch to circle";
+            }            
+		}
+		
+		private function updateEdgeToogleText():void
+		{
+			if (show_edges)
+			{
+				_edges_toogle.text="Click Here To Hide Edges";
+			}
+			else
+			{
+				_edges_toogle.text="Click Here To Show Edges";
+			}
+			
+			update();
+		}
+		
+		private function layout():void
+		{
+			if (vis)
+			{
+				
+			}
+			if (_edges_toogle)
+			{
+				 _edges_toogle.y = vis.bounds.height + 5;				
+			}
+				
+		
+			if (_node_click_behavior_toggle) 
+			{
+				_node_click_behavior_toggle.y = _edges_toogle.y + _edges_toogle.height + 10; 			
+			}
+			
+			if (_layout_format_toogle)
+			{
+				_layout_format_toogle.y = _node_click_behavior_toggle.y + _node_click_behavior_toggle.height + 10;
+			}
+
+			if (_detail)
+			{
+				_detail.y = _layout_format_toogle.y + _layout_format_toogle.height + 10; 				
+			}
+			
+
+		}
+		
+		private function handleClickedNode(clicked_node:NodeSprite):void
+		{
+				restore_edges_color();
+				dim_edges_color();
+				restore_nodes_color();
+						
+				if (node_click_behavior == ON_CLICK_SHOW_PARENTS_AND_CHILDREN)
+				{
+					highlightNode(clicked_node);
+				}
+				else if (node_click_behavior == ON_CLICK_SHOW_PATH_TO_REST_OF_THE_WORLD)
+				{
+					highlightShortestPath(clicked_node);
+				}
+				clicked_node.fillColor =  _clicked_node_color;
+		}
+		
+		private function get_asn_summary_string(node:NodeSprite):String
+		{		
+			var ret:String = "";
+		
+			var data:Object = node.data;
+			 	
+			ret += data.organization_name;
+			if (data.is_point_of_control)
+			{
+				ret += "\n Point of Control";
+			}
+			ret += "\n ASN: " + data.asn;
+			
+			ret += "\n Direct IPs: " + data.direct_ips;
+			ret += "\n Effectively Monitored IPs: " + data.total_monitorable;
+			ret += "\n Percent Monitoring: " + data.percent_monitorable;
+			ret += "\n In degreee " + node.inDegree;
+			ret += "\n Out degreee " + node.outDegree;
+			ret += "\n Sprite_size: " + node.size;			
+			return ret;			
+		}
+		
+		private function buildData(arr:Array):Data
+		{
+			var data:Data = new Data(true);
+	
+			var asn_to_node:Dictionary = new Dictionary();
+	
+			var total_ips:int = 0;
+			
+			for each (var o:Object in arr) {
+     			var nodeSprite:NodeSprite = data.addNode(o);
+     			asn_to_node[o['asn']] = nodeSprite;
+     			var direct_ips:int = o['direct_ips'] 
+     			total_ips += direct_ips;
+    		}
+
+			var average_ips:int =  total_ips/arr.length;
+			
+			for each (var o:Object in arr) {
+     			var nodeSprite:NodeSprite = asn_to_node[o['asn']];
+     			var customers:Array  = o['customers'];
+     
+     			var effective_monitorable_ips:int = o['total_monitorable'];
+     			var direct_ips:int =  o['direct_ips'];
+     			
+     			var node_size:Number;
+     			
+     			node_size =  1*Math.log(effective_monitorable_ips)/Math.log(average_ips);
+     			nodeSprite.size = node_size;
+     			node_size = 1*Math.log(effective_monitorable_ips/average_ips);
+     			//nodeSprite.size = node_size;
+     			if (o['asn'] == 'REST_OF_WORLD')
+     			{
+     				nodeSprite.size = 1;
+     				rest_of_world_node = nodeSprite;
+     			}     
+     			
+     			
+     			for each (var customer:String in customers)
+     			{
+     				if (asn_to_node[customer])
+     				{
+     					var customer_node:NodeSprite = asn_to_node[customer];
+     					
+     					if (customer_node.data['asn'] != 'REST_OF_WORLD')
+     					{
+     						data.addEdgeFor(customer_node, nodeSprite, true);
+     					}
+     				}    	
+     			}					
+			}		
+			return data;
+		}
+	}
+}

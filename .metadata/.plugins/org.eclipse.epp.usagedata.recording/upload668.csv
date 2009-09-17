@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.file.save,1245689525126
+activated,view,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.navigator,1245689795833
+executed,command,com.adobe.flexbuilder.debug.ui,3.0.204732,com.adobe.flexbuilder.debug.ui.flexLaunchShortcut.run,1245689798742
+deactivated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245689801524
+activated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245689862660
+activated,editor,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor,1245689959064
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245689970111
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.cut,1245689980281
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.paste,1245689981726
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.select.lineEnd,1245689987746
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245689988141
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.select.lineEnd,1245689990354
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.copy,1245689991090
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.paste,1245689992721
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineStart,1245689997841
+no handler,command,org.eclipse.datatools.sqltools.result,,org.eclipse.datatools.sqltools.result.removeAllInstances,1245689998359
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245690009604
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245690015390
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineStart,1245690039369
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1245690040808
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1245690044481
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245690050035
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245690058854
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.copy,1245690080794
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1245690082241

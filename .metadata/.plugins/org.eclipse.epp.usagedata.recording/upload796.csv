@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.file.save,1245862888589
+activated,view,org.eclipse.ui.navigator.resources,3.3.101.M20080910-0800,org.eclipse.ui.navigator.ProjectExplorer,1245862890252
+executed,command,com.adobe.flexbuilder.debug.ui,3.0.204732,com.adobe.flexbuilder.debug.ui.flexLaunchShortcut.run,1245862893371
+deactivated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862896046
+activated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862907923
+activated,editor,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor,1245862910855
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineEnd,1245862912226
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245862919989
+deactivated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862921609
+no handler,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245862921704
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.newWizard,1245862923207
+activated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862923419
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245862924101
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245862933935
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.text.contentAssist.proposals,1245862937474
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.select.lineStart,1245862945204
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.file.save,1245862948485
+deactivated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862965144
+activated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862970884
+deactivated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862970913
+activated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862971058
+deactivated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862976586
+activated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1245862983361
+executed,command,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.go.to.definition,1245862990477
+opened,editor,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor,1245862993574

@@ -1,0 +1,17 @@
+what,kind,bundleId,bundleVersion,description,time
+stopped,bundle,com.spket.mime,1.6.8,com.spket.mime,1241542199846
+stopped,bundle,com.spket.js,1.6.16,com.spket.js,1241542199846
+stopped,bundle,com.spket.xml,1.6.15,com.spket.xml,1241542199846
+stopped,bundle,com.spket.ui,1.6.16,com.spket.ui,1241542199846
+stopped,bundle,com.interaktonline.jseclipse,1.5.5,com.interaktonline.jseclipse,1241542199846
+stopped,bundle,org.eclipse.ui.editors,3.4.0.v20080603-2000,org.eclipse.ui.editors,1241542199855
+stopped,bundle,org.eclipse.epp.usagedata.ui,1.0.1.R200809220400,org.eclipse.epp.usagedata.ui,1241542199855
+stopped,bundle,org.eclipse.ui.intro.universal,3.2.200.v20080508,org.eclipse.ui.intro.universal,1241542199855
+stopped,bundle,org.xulbooster.eclipse.xb.ui.intro,0.2.1,org.xulbooster.eclipse.xb.ui.intro,1241542199855
+stopped,bundle,org.eclipse.ui.intro,3.2.201.v20080702_34x,org.eclipse.ui.intro,1241542199855
+stopped,bundle,org.eclipse.ui.navigator.resources,3.3.101.M20080910-0800,org.eclipse.ui.navigator.resources,1241542199855
+stopped,bundle,org.eclipse.ui.net,1.0.0.I20080605,org.eclipse.ui.net,1241542199855
+stopped,bundle,org.eclipse.ui.presentations.r21,3.2.100.I20080512-2000,org.eclipse.ui.presentations.r21,1241542199855
+stopped,bundle,org.eclipse.ui.console,3.3.1.v20090128_r342,org.eclipse.ui.console,1241542199856
+stopped,bundle,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.workbench.texteditor,1241542199856
+stopped,bundle,org.eclipse.update.scheduler,3.2.100.v20080404,org.eclipse.update.scheduler,1241542199856

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>asn_visualization</name>
+	<comment></comment>
+	<projects>
+		<project>flare</project>
+		<project>flare.demos</project>
+		<project>flare.tests</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] flare.apps</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/flare.apps</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

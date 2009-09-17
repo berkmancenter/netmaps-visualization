@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.StepOver,1241584796873
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.StepOver,1241584798510
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.StepOver,1241584803899
+activated,view,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.VariableView,1241584811514
+deactivated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1241584845248
+activated,workbench,org.eclipse.ui.workbench,3.4.2.M20090127-1700,,1241584850994
+activated,view,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.DebugView,1241584852892
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.StepOver,1241584852970
+activated,view,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.VariableView,1241584872760
+activated,view,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.DebugView,1241584898214
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.StepOver,1241584898294
+activated,view,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.VariableView,1241584902921
+activated,view,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.DebugView,1241584925088
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.StepInto,1241584925169
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.StepOver,1241584927764
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.StepOver,1241584928880
+activated,editor,com.adobe.flexbuilder.editors.actionscript,3.0.204732,com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor,1241584937091
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.goto.lineStart,1241584941944
+executed,command,org.eclipse.ui.workbench.texteditor,3.4.1.r341_v20080827-1100,org.eclipse.ui.edit.text.select.lineEnd,1241584942639
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1241584943873
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.edit.delete,1241584944380
+executed,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.file.save,1241584950278
+activated,view,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.DebugView,1241584955463
+executed,command,org.eclipse.debug.ui,3.4.2.v20090110_r342,org.eclipse.debug.ui.commands.Terminate,1241584955513
+no handler,command,org.eclipse.ui,3.4.2.M20090204-0800,org.eclipse.ui.file.refresh,1241584957864

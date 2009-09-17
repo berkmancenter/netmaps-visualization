@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.adobe.flexbuilder.debug.launchConfigurationType.flash">
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_APPLICATION" value="src/flare/apps/DependencyGraph.as"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_DEBUG_URL" value="file:/home/dlarochelle/flare_flex/flare_zip/flare.apps/bin-debug/apps.html"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_PROFILE_URL" value="file:/home/dlarochelle/flare_flex/flare_zip/flare.apps/bin-debug/apps.html"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_PROJECT" value="flare.apps"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_RUN_URL" value="file:/home/dlarochelle/flare_flex/flare_zip/flare.apps/bin-debug/apps.html"/>
+<booleanAttribute key="com.adobe.flexbuilder.debug.ATTR_USE_DEFAULT_URLS" value="true"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/flare.apps"/>
+<listEntry value="/flare.apps/src/flare/apps/DependencyGraph.as"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+<listEntry value="1"/>
+</listAttribute>
+</launchConfiguration>

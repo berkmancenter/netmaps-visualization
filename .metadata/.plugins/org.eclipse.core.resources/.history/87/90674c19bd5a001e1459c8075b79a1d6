@@ -1,0 +1,344 @@
+package {
+	
+	import flare.analytics.graph.ShortestPaths;
+	import flare.data.converters.JSONConverter;
+	import flare.display.TextSprite;
+	import flare.vis.Visualization;
+	import flare.vis.controls.ClickControl;
+	import flare.vis.controls.HoverControl;
+	import flare.vis.data.Data;
+	import flare.vis.data.EdgeSprite;
+	import flare.vis.data.NodeSprite;
+	import flare.vis.events.SelectionEvent;
+	import flare.vis.operator.layout.CircleLayout;
+	
+	import flash.display.Sprite;
+	import flash.filters.DropShadowFilter;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.text.TextFormat;
+	import flash.utils.Dictionary;
+	
+	[SWF(backgroundColor="#ffffff", width="800", height="600", frameRate="30")]
+	public class asn_visualization extends Sprite
+	{
+		private var _bar:ProgressBar;
+		private var vis:Visualization;
+		private var _detail:TextSprite;
+		private var _default_edge_line_color:uint = 0XFFCCCCCC;
+		private var _default_node_fill_color:uint = 0XFFCCCCCC;
+		private var _default_node_line_color:uint = 0XFF000000;
+
+		private var rest_of_world_node:NodeSprite = null;
+				
+		private function get_json_url():String
+		{
+			var json_url:String    = root.loaderInfo.parameters.json_url;
+
+			if (json_url == null)
+			{
+				json_url = "http://localhost/asn_web_graphs/country_json_summary.php/?cc=IR";
+			}
+		
+			return json_url;			
+		}
+		
+		public function asn_visualization()
+		{
+				// create progress bar
+			addChild(_bar = new ProgressBar());
+			_bar.bar.filters = [new DropShadowFilter(1)];
+			
+			// load data file
+			var ldr:URLLoader = new URLLoader(new URLRequest(get_json_url()));
+			_bar.loadURL(ldr, function():void {
+				var jsc:JSONConverter = new JSONConverter();
+				var arr:Array = jsc.parse(ldr.data, null);
+
+				var data:Data = buildData(arr);
+	            visualize(data);
+	            _bar = null;
+			});
+		}
+		
+		public function visualize(data:Data):void 
+		{
+			vis = new Visualization(data);
+/*			vis.bounds.x = bounds.x;
+			vis.bounds.y = bounds.y + (0.06 * bounds.height);
+			
+			vis.bounds.width = bounds.width;
+			vis.bounds.height = bounds.height - (0.10 * bounds.height);
+		
+			
+			vis.operators.add(opt[idx].op);
+			vis.setOperator("nodes", new PropertyEncoder(opt[idx].nodes, "nodes"));
+			vis.setOperator("edges", new PropertyEncoder(opt[idx].edges, "edges"));
+			
+			*/
+			
+			vis.controls.add(new HoverControl(NodeSprite,
+				// by default, move highlighted items to front
+				HoverControl.MOVE_AND_RETURN,
+				// highlight node border on mouse over
+				function(e:SelectionEvent):void {
+					//node.lineWidth = 2;
+					e.node.lineColor = 0x88ff00FF;
+				},
+				// remove highlight on mouse out
+				function(e:SelectionEvent):void {
+					//node.lineWidth = 0;
+					e.node.lineColor = _default_node_line_color;
+				}));
+			
+			var clicked_node:NodeSprite = null;
+			
+			vis.controls.add(new ClickControl (NodeSprite,
+			1,
+			function(evt:SelectionEvent):void {
+				evt.node.lineColor = 0xFFFF00cc;		
+				evt.node.fillColor = 0XFF00FF00;
+				
+				if (clicked_node)
+				{
+					unhighlightNode(clicked_node);	
+					for each (var _edge:EdgeSprite in vis.data.edges)
+					{
+						_edge.lineColor = _default_edge_line_color;
+					}			
+				}
+				
+				clicked_node = evt.node;
+				highlightNode(evt.node);
+				//highlightShortestPath(clicked_node);
+				
+				//highlightNode(evt.node);
+							},
+			function(evt:SelectionEvent):void {
+				evt.node.lineColor = 0xFFFF0Fcc;	
+				evt.node.fillColor = 0XFF00FF00;
+				unhighlightNode(clicked_node);
+				vis.update(); 	 
+			}));
+				
+			// add mouse-over details
+			vis.controls.add(new HoverControl(NodeSprite,
+				HoverControl.DONT_MOVE,
+				function(evt:SelectionEvent):void {
+					_detail.text = get_asn_summary_string(evt.node);
+				},
+				function(evt:SelectionEvent):void {
+					_detail.text = vis.data.nodes.length + " asns";
+				}
+			));
+	
+			//vis.controls.add(opt[idx].ctrl);
+			
+			//addDetail();
+			
+			var circle_layout:CircleLayout = new CircleLayout("depth", null, true);
+			
+			circle_layout.padding = 100; 
+			vis.operators.add(circle_layout);
+			vis.bounds.x = 0;
+			vis.bounds.y = 0;
+			
+			vis.continuousUpdates = false;
+			vis.update();
+			
+			addDetail();
+			
+			addChild(vis);
+			
+		}
+		
+		private function highlightShortestPath(node:NodeSprite)
+		{
+			var sp:ShortestPaths = new ShortestPaths();		 
+			 sp.calculate(vis.data,node);
+			 var sp_shortest_to:Array = sp.getShortestPathTo(rest_of_world_node);
+			 
+			 var prev_node:NodeSprite;
+			 for each (var child_node:NodeSprite in sp_shortest_to) {
+			 
+			 if (child_node != node) {
+			  	var e:EdgeSprite = findEdgeBetweenNodes(prev_node, child_node);
+			  	e.lineColor = 0xff00ff00;
+			 }
+			 prev_node = child_node;
+		}
+		}
+		
+		//The flare library should really have this API
+		private function findEdgeBetweenNodes(source_node:NodeSprite, dest_node:NodeSprite):EdgeSprite
+		{
+			var ret:EdgeSprite = null;
+			
+			source_node.visitEdges(function(e:EdgeSprite):void {
+				if ((e.source==source_node) && (e.target==dest_node) )
+				{
+					ret = e;
+				}
+			}, NodeSprite.OUT_LINKS);
+			
+			//source_node._inEdges;
+			
+			return ret;
+			
+			source_node.getOutEdge(1);
+		}
+		private function highlightNode(node:NodeSprite):void
+		{			 	
+				node.visitEdges(function(e:EdgeSprite):void {
+					e.alpha = 0.5;
+					e.lineColor = 0xff00ff00;
+					//e.source.props.label.color = 0x00cc00;
+					vis.marks.setChildIndex(e, vis.marks.numChildren-1);
+					}, NodeSprite.IN_LINKS);
+
+			node.visitNodes(function(n:NodeSprite):void {
+				n.fillColor = 0xff00ff00;
+			}, NodeSprite.IN_LINKS);
+					
+			// highlight links the focus depends on in red
+			node.visitEdges(function(e:EdgeSprite):void {
+				e.alpha = 0.5;
+				e.lineColor = 0xffff0000;
+				//e.target.props.label.color = 0xff0000;
+				vis.marks.setChildIndex(e, vis.marks.numChildren-1);
+			}, NodeSprite.OUT_LINKS);
+			
+			node.visitNodes(function(n:NodeSprite):void {
+				n.fillColor = 0xffff0000;
+			}, NodeSprite.OUT_LINKS);
+			
+				vis.update(); 
+		}
+		
+			private function unhighlightNode(node:NodeSprite):void
+		{	
+				node.visitEdges(function(e:EdgeSprite):void {
+					e.alpha = 0.5;
+					e.lineColor = _default_edge_line_color;
+					//e.source.props.label.color = 0x00cc00;
+					vis.marks.setChildIndex(e, vis.marks.numChildren-1);
+					}, NodeSprite.IN_LINKS);
+					
+			// highlight links the focus depends on in red
+			node.visitEdges(function(e:EdgeSprite):void {
+				e.alpha = 0.5;
+				e.lineColor = _default_edge_line_color;
+				//e.target.props.label.color = 0xff0000;
+				vis.marks.setChildIndex(e, vis.marks.numChildren-1);
+			}, NodeSprite.OUT_LINKS);
+			
+			node.fillColor = _default_node_fill_color;
+			node.lineColor = 0XFF000000;
+			
+			node.visitNodes(function(n:NodeSprite):void {
+				n.fillColor = _default_node_fill_color;
+			});
+			
+				vis.update(); 
+		}
+		
+		
+			private function addDetail():void
+		{	
+			var fmt:TextFormat = new TextFormat("Verdana",14);
+			
+			/*
+			_legend = Legend.fromValues(null, [
+				{color: 0xffff0000, size: 0.75, label: "Imports"},
+				{color: 0xff00ff00, size: 0.75, label: "Is Imported By"}
+			]);
+			_legend.labelTextFormat = fmt;
+			_legend.labelTextMode = TextSprite.EMBED;
+			_legend.update();
+			addChild(_legend);
+			*/
+			
+			_detail = new TextSprite("", null, TextSprite.DEVICE);
+			_detail.textField.multiline = true;
+			_detail.htmlText = vis.data.nodes.length + " asns";
+
+			_detail.y = vis.bounds.height - _detail.height - 150;
+
+			//vis.addChild(_detail);
+			//_detail.height = _detail.height + 100;
+			addChild(_detail);
+		}
+		
+		private function get_asn_summary_string(node:NodeSprite):String
+		{		
+			var ret:String = "";
+		
+			var data:Object = node.data;
+			 	
+			ret += data.organization_name;
+			if (data.is_point_of_control)
+			{
+				ret += "\n Point of Control";
+			}
+			ret += "\n ASN: " + data.asn;
+			
+			ret += "\n Direct IPs: " + data.direct_ips;
+			ret += "\n Effectively Monitored IPs: " + data.total_monitorable;
+			ret += "\n Percent Monitoring: " + data.percent_monitorable;
+			ret += "\n In degreee " + node.inDegree;
+			ret += "\n Out degreee " + node.outDegree;
+			ret += "\n Sprite_size: " + node.size;			
+			return ret;			
+		}
+		
+		private function buildData(arr:Array):Data
+		{
+			var data:Data = new Data();
+	
+			var asn_to_node:Dictionary = new Dictionary();
+	
+			var total_ips:int = 0;
+			
+			for each (var o:Object in arr) {
+     			var nodeSprite:NodeSprite = data.addNode(o);
+     			asn_to_node[o['asn']] = nodeSprite;
+     			var direct_ips:int = o['direct_ips'] 
+     			total_ips += direct_ips;
+    		}
+
+			var average_ips:int =  total_ips/arr.length;
+			
+			for each (var o:Object in arr) {
+     			var nodeSprite:NodeSprite = asn_to_node[o['asn']];
+     			var customers:Array  = o['customers'];
+     
+     			var effective_monitorable_ips:int = o['total_monitorable'];
+     			var direct_ips:int =  o['direct_ips'];
+     			
+     			var node_size:Number;
+     			
+     			node_size =  1*Math.log(effective_monitorable_ips)/Math.log(average_ips);
+     			nodeSprite.size = node_size;
+     			node_size = 1*Math.log(effective_monitorable_ips/average_ips);
+     			//nodeSprite.size = node_size;
+     			if (o['asn'] == 'REST_OF_WORLD')
+     			{
+     				nodeSprite.size = 1;
+     				rest_of_world_node = nodeSprite;
+     			}
+     			
+     			
+     			
+     			for each (var customer:String in customers)
+     			{
+     				if (asn_to_node[customer])
+     				{
+     					var customer_node:NodeSprite = asn_to_node[customer];
+     					data.addEdgeFor(customer_node, nodeSprite, true);
+     				}    	
+     			}					
+			}		
+			return data;
+		}
+	}
+}
