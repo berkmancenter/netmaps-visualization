@@ -89,9 +89,8 @@ package
         private var _edges_toogle:TextSprite;
         private var _edges_toogle_container:Sprite
         private var _layout_format_toggle_container:Sprite;
-        //     private var _layout_format_toogle:TextSprite;
         private var _node_click_behavior_toggle:TextSprite;
-        private var _path_type_toogle:TextSprite;
+        //private var _path_type_toogle:TextSprite;
 
         private var _below_vis:TextSprite;
 
@@ -272,32 +271,6 @@ package
             addChild(_node_click_behavior_toggle);
 
             create_layout_format_toogle(CIRCLE_LAYOUT);
-            /*
-               _layout_format_toogle=new TextSprite("", null, TextSprite.DEVICE);
-               _layout_format_toogle.textField.multiline=true;
-               _layout_format_toogle.buttonMode=true;
-               _layout_format_toogle.useHandCursor = true;
-
-               _layout_format_toogle.addEventListener(MouseEvent.CLICK, function(evt:MouseEvent):void
-               {
-               if (layout_format == CIRCLE_LAYOUT)
-               {
-               layout_format=RADIAL_LAYOUT;
-               }
-               else if (node_click_behavior == RADIAL_LAYOUT)
-               {
-               layout_format=CIRCLE_LAYOUT;
-               }
-
-               updateOperators();
-               updateLayoutFormatText();
-               vis.update();
-               layout();
-               });
-               updateLayoutFormatText();
-
-               addChild(_layout_format_toogle);
-             */
 
             _below_vis=new TextSprite("XXX", null, TextSprite.DEVICE);
             addChild(_below_vis);
@@ -308,9 +281,6 @@ package
             _detail=new TextSprite("", null, TextSprite.DEVICE);
             _detail.textField.multiline=true;
             _detail.htmlText=word_wrap_to_default(DEFAULT_DETAIL_TEXT);
-
-            //vis.addChild(_detail);
-            //_detail.height = _detail.height + 100;
             addChild(_detail);
         }
 
@@ -347,7 +317,7 @@ package
 
                 var effective_monitorable_ips:int=o['total_monitorable'];
                 var direct_ips:int=o['direct_ips'];
-                var percentage_monitorable=o['percent_monitorable'];
+                var percentage_monitorable:Number=o['percent_monitorable'];
                 var node_size:Number;
 
                 node_size=1 * Math.log(effective_monitorable_ips) / Math.log(average_ips);
@@ -362,7 +332,6 @@ package
                 node_size=Math.max(node_size, 0.3);
                 nodeSprite.size=node_size;
 
-                //nodeSprite.size = node_size;
                 if (o['asn'] == 'REST_OF_WORLD')
                 {
                     rest_of_world_node=nodeSprite;
@@ -696,26 +665,18 @@ package
         {
             if (vis)
             {
-                //vis.scaleX = 0.2;
-                //vis.scaleY = 0.2;
-                //vis.x = vis.bounds.width/2;
-                //vis.y = vis.bounds.height/2;
                 vis.update();
-                    //vis.opaqueBackground();
-                    //vis.graphics.beginFill(0XFF000000);
             }
 
-            var button_y_pos:int=10; // vis.bounds.height + 5;
+            var button_y_pos:int=10;
 
             if (_edges_toogle_container)
             {
                 _edges_toogle_container.y=button_y_pos;
-                    //_edges_toogle.y=0;
             }
 
             if (_layout_format_toggle_container)
             {
-                //_layout_format_toogle.y= _edges_toogle.y + _edges_toogle.height + 10;
                 _layout_format_toggle_container.y=_edges_toogle_container.y;
                 _layout_format_toggle_container.x=_edges_toogle_container.x + _edges_toogle_container.width + 15;
             }
@@ -788,9 +749,7 @@ package
         {
             for each (var _edge:EdgeSprite in vis.data.edges)
             {
-                //_edge.lineColor = 0X00FFFFFF;
                 _edge.visible=true;
-
             }
 
             vis.update();
@@ -802,7 +761,6 @@ package
                 {
                     e.alpha=0.5;
                     e.lineColor=_default_edge_line_color;
-                    //e.source.props.label.color = 0x00cc00;
                     vis.marks.setChildIndex(e, vis.marks.numChildren - 1);
                 }, NodeSprite.IN_LINKS);
 
@@ -811,7 +769,6 @@ package
                 {
                     e.alpha=0.5;
                     e.lineColor=_default_edge_line_color;
-                    //e.target.props.label.color = 0xff0000;
                     vis.marks.setChildIndex(e, vis.marks.numChildren - 1);
                 }, NodeSprite.OUT_LINKS);
 
@@ -845,19 +802,6 @@ package
             update();
         }
 
-        /*
-           private function updateLayoutFormatText():void
-           {
-           if (layout_format == CIRCLE_LAYOUT)
-           {
-           _layout_format_toogle.text="CIRCLE LAYOUT / radial layout";
-           }
-           else if (layout_format == RADIAL_LAYOUT)
-           {
-           _layout_format_toogle.text="circle layout / RADIAL LAYOUT";
-           }
-           }
-         */
         private function updateNodeClickBehaviorText(node_click_behavior:uint=0):void
         {
             switch (node_click_behavior)
@@ -883,11 +827,8 @@ package
 
             vis.scaleX=1;
             vis.scaleY=1;
-            //vis.bounds.height=1000;
-            //vis.bounds.width=1000;
 
             const CIRCLE_LAYOUT_BOUNDS:int=1000;
-
 
             if (layout_format == CIRCLE_LAYOUT)
             {
