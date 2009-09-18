@@ -90,7 +90,6 @@ package
         private var _edges_toogle_container:Sprite
         private var _layout_format_toggle_container:Sprite;
         private var _node_click_behavior_toggle:TextSprite;
-        //private var _path_type_toogle:TextSprite;
 
         private var _below_vis:TextSprite;
 
@@ -123,13 +122,11 @@ package
                 // highlight node border on mouse over
                 function(e:SelectionEvent):void
                 {
-                    //node.lineWidth = 2;
                     e.node.lineColor=0x88ff00FF;
                 },
                 // remove highlight on mouse out
                 function(e:SelectionEvent):void
                 {
-                    //node.lineWidth = 0;
                     e.node.lineColor=_default_node_line_color;
                 }));
 
@@ -188,7 +185,6 @@ package
             addChild(vis);
             vis.update();
             layout();
-            // updateLayoutFormatText();
             vis.update();
         }
 
@@ -394,8 +390,6 @@ package
                     }
                 }, NodeSprite.OUT_LINKS);
 
-            //source_node._inEdges;
-
             return ret;
 
             source_node.getOutEdge(1);
@@ -523,8 +517,6 @@ package
             return ret;
         }
 
-        //private var _rest_of_the_world_node:NodeSprite = null;
-
         private function get_json_url():String
         {
             var json_url:String=root.loaderInfo.parameters.json_url;
@@ -576,7 +568,6 @@ package
         {
             for each (var _edge:EdgeSprite in vis.data.edges)
             {
-                //_edge.lineColor = 0X00FFFFFF;
                 _edge.visible=false;
 
             }
@@ -592,8 +583,6 @@ package
                     e.alpha=0.5;
                     e.lineColor=color;
                     e.lineColor&=alpha;
-                //e.source.props.label.color = 0x00cc00;
-                //  vis.marks.setChildIndex(e, vis.marks.numChildren - 1);
                 }, edges_visted);
 
             node.visitNodes(function(n:NodeSprite):void
@@ -692,7 +681,6 @@ package
 
             if (_node_click_behavior_toggle)
             {
-                //_node_click_behavior_toggle.y=_edges_toogle.y + _edges_toogle.height + 10;
                 _node_click_behavior_toggle.y=_detail.y + _detail.height + 10;
                 _node_click_behavior_toggle.x=_detail.x;
             }
