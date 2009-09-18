@@ -1,8 +1,9 @@
 package
 {
 
+    import com.adobe.serialization.json.JSON;
+
     import flare.analytics.graph.ShortestPaths;
-    import flare.data.converters.JSONConverter;
     import flare.display.DirtySprite;
     import flare.display.TextSprite;
     import flare.query.methods.update;
@@ -55,10 +56,9 @@ package
             var ldr:URLLoader=new URLLoader(new URLRequest(get_json_url()));
             _bar.loadURL(ldr, function():void
                 {
-                    var jsc:JSONConverter=new JSONConverter();
-                    var arr:Array=jsc.parse(ldr.data, null);
+                    var json:Object=JSON.decode(ldr.data)
 
-                    var data:Data=buildData(arr);
+                    var data:Data=buildData(json);
                     visualize(data);
                     _bar=null;
                     update();
@@ -92,6 +92,7 @@ package
         private var _node_click_behavior_toggle:TextSprite;
 
         private var _below_vis:TextSprite;
+        private var _country_info_box:TextSprite;
 
         private var layout_format:uint=CIRCLE_LAYOUT;
 
@@ -106,6 +107,8 @@ package
 
         private static const show_edges:Boolean=true;
         private var vis:Visualization;
+
+        private var country_level_info:Object; // Country stats such as network complexity, PoC, etc.
 
         public function visualize(data:Data):void
         {
@@ -270,6 +273,22 @@ package
 
             _below_vis=new TextSprite("XXX", null, TextSprite.DEVICE);
             addChild(_below_vis);
+
+            var number_base:NumberBase=new NumberBase();
+
+            _country_info_box=new TextSprite("XXX", null, TextSprite.DEVICE);
+
+            _country_info_box.textField.multiline=true;
+            var country_info_string:String=country_info_string="<b>Country Summary:</b>\n";
+            country_info_string+="Network Complexity: " + number_base.formatPrecision(country_level_info['complexity'], 3) + "\n";
+            country_info_string+=number_base.formatThousands(country_level_info['total_ips']) + " IP Addresses" + "\n";
+            country_info_string+=number_base.formatThousands(country_level_info["points_of_control"]) + " Points of Control: " + "\n";
+            country_info_string+=number_base.formatThousands(country_level_info["ips_per_points_of_control"]) + " IPs per Point of Control";
+
+            _country_info_box.htmlText=country_info_string;
+
+            addChild(_country_info_box);
+
         }
 
         private function addDetail():void
@@ -287,7 +306,7 @@ package
             return ret;
         }
 
-        private function buildData(arr:Array):Data
+        private function buildData(json:Object):Data
         {
             var data:Data=new Data(true);
 
@@ -296,6 +315,10 @@ package
             var total_ips:int=0;
 
             var o:Object;
+
+            country_level_info=json.country_level_info;
+
+            var arr:Array=json.asns;
             for each (o in arr)
             {
                 var nodeSprite:NodeSprite=data.addNode(o);
@@ -676,7 +699,7 @@ package
             if (_detail)
             {
                 _detail.x=vis.bounds.width + 1;
-                _detail.y=vis.bounds.y + vis.bounds.height / 5;
+                _detail.y=vis.bounds.y + vis.bounds.height / 8;
             }
 
             if (_node_click_behavior_toggle)
@@ -691,9 +714,15 @@ package
             _below_vis.text+="vis bounds  " + vis.bounds;
             _below_vis.text+=" vis.x " + vis.x;
             _below_vis.text+=" vis.y " + vis.y;
-            _below_vis.y=vis.y + vis.bounds.height;
+            _below_vis.y=vis.y + vis.bounds.height - 10;
             _below_vis.x=vis.y + vis.bounds.width / 2;
             _below_vis.text+="under vis " + _below_vis.y
+
+            if (_country_info_box)
+            {
+                _country_info_box.x=vis.x + vis.width - 48;
+                _country_info_box.y=vis.y + vis.height - _country_info_box.height + 10;
+            }
         }
 
         private function restore_edges_color():void
