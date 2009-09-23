@@ -466,7 +466,7 @@ package
 
             if (node == rest_of_world_node)
             {
-                ret="This node represents the" + " wider Internet community " + "outside the country.";
+                ret="This node represents the wider Internet outside the country.";
                 ret=word_wrap_to_default(ret);
                 return ret;
             }
