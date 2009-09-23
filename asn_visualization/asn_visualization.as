@@ -717,6 +717,8 @@ package
             _below_vis.y=vis.y + vis.bounds.height - 10;
             _below_vis.x=vis.y + vis.bounds.width / 2;
             _below_vis.text+="under vis " + _below_vis.y
+            
+            _below_vis.visible=false;
 
             if (_country_info_box)
             {
