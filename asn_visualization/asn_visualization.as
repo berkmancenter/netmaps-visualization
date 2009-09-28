@@ -833,7 +833,7 @@ package
                     _node_click_behavior_toggle.text="Showing node's path to the wider Internet. Click node again to see its parent and child links.";
                     break;
                 case 2:
-                    _node_click_behavior_toggle.text="Showing node's parent and child link. Click node again to see its path to the wider Internet.";
+                    _node_click_behavior_toggle.text="Showing node's parent and child links. Click node again to see its path to the wider Internet.";
                     break;
             }
 
