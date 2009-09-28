@@ -3,18 +3,19 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="693" key="DIALOG_WIDTH"/>
 		<item value="502" key="DIALOG_Y_ORIGIN"/>
-		<item value="531" key="DIALOG_X_ORIGIN"/>
 		<item value="427" key="DIALOG_HEIGHT"/>
+		<item value="531" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Sans|10.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="_layout_format_toggle_container" key="selection"/>
+		<item value="wider" key="selection"/>
 		<list key="findhistory">
+			<item value="wider"/>
 			<item value="_lay_format_toggle_container"/>
 			<item value="_layout_format_toogle"/>
 			<item value="hide"/>
@@ -22,7 +23,6 @@
 			<item value="_edges_toogle_container"/>
 			<item value="showEdges"/>
 			<item value="restore"/>
-			<item value="_path_type_toogle"/>
 		</list>
 		<list key="replacehistory">
 			<item value="_layout_format_toggle_container"/>

@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <!--  BEGIN DeepLinking required section -->
-<link rel="stylesheet" type="text/css" href="deeplinking/deeplinking.css" />
+<link rel="stylesheet" type="text/css"
+	href="deeplinking/deeplinking.css" />
 <!--  END DeepLinking required section -->
 
 <title>${title}</title>
@@ -15,7 +16,10 @@
 <!--  END DeepLinking required section -->
 
 <style>
-body { margin: 0px; overflow:hidden }
+body {
+	margin: 0px;
+	overflow: hidden
+}
 </style>
 <script language="JavaScript" type="text/javascript">
 <!--
@@ -91,24 +95,19 @@ if ( hasProductInstall && !hasRequestedVersion ) {
   }
 // -->
 </script>
-<noscript>
-  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-			id="${application}" width="${width}" height="${height}"
-			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
-			<param name="movie" value="${swf}.swf" />
-			<param name="quality" value="high" />
-			<param name="bgcolor" value="${bgcolor}" />
-			<param name="allowScriptAccess" value="sameDomain" />
-			<embed src="${swf}.swf" quality="high" bgcolor="${bgcolor}"
-				width="${width}" height="${height}" name="${application}" align="middle"
-				play="true"
-				loop="false"
-				quality="high"
-				allowScriptAccess="sameDomain"
-				type="application/x-shockwave-flash"
-				pluginspage="http://www.adobe.com/go/getflashplayer">
-			</embed>
-	</object>
-</noscript>
+<noscript><object
+	classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+	id="${application}" width="${width}" height="${height}"
+	codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+	<param name="movie" value="${swf}.swf" />
+	<param name="quality" value="high" />
+	<param name="bgcolor" value="${bgcolor}" />
+	<param name="allowScriptAccess" value="sameDomain" />
+	<embed src="${swf}.swf" quality="high" bgcolor="${bgcolor}"
+		width="${width}" height="${height}" name="${application}"
+		align="middle" play="true" loop="false" quality="high"
+		allowScriptAccess="sameDomain" type="application/x-shockwave-flash"
+		pluginspage="http://www.adobe.com/go/getflashplayer">
+	</embed> </object></noscript>
 </body>
 </html>
