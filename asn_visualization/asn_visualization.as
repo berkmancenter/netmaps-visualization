@@ -2,7 +2,7 @@ package
 {
 
     import com.adobe.serialization.json.JSON;
-
+    
     import flare.analytics.graph.ShortestPaths;
     import flare.display.DirtySprite;
     import flare.display.TextSprite;
@@ -16,7 +16,7 @@ package
     import flare.vis.events.SelectionEvent;
     import flare.vis.operator.layout.BundledEdgeRouter;
     import flare.vis.operator.layout.CircleLayout;
-
+    
     import flash.display.Sprite;
     import flash.events.MouseEvent;
     import flash.filters.DropShadowFilter;
@@ -25,7 +25,7 @@ package
     import flash.net.URLRequest;
     import flash.utils.Dictionary;
     import flash.utils.getDefinitionByName;
-
+    
     import mx.core.*;
     import mx.formatters.NumberBase;
     import mx.formatters.NumberBaseRoundType;
@@ -44,6 +44,8 @@ package
 
         private static const ON_CLICK_SHOW_PATH_TO_REST_OF_THE_WORLD:uint=1;
         private static const RADIAL_LAYOUT:uint=2;
+
+		private static const clean_up_organization_name:Boolean = false;	
 
         public function asn_visualization()
         {
@@ -433,16 +435,26 @@ package
                     continue;
                 }
 
-                if ((line_length + substring_length) > line_width)
+                if (ret != "")
                 {
-                    ret+='\n ';
-                    line_length=1;
+                	if ((line_length + substring_length) > line_width)
+                	{
+                    	ret+='\n ';
+                    	line_length=1;
+                	}
+					else
+					{	
+                   		ret+=' ';
+                    	line_length+=1;
+                	}
                 }
-                else if (ret != "")
-                {
-                    ret+=' ';
-                    line_length+=1;
-                }
+                
+				// Break on '-' if it's larger than 20 characters.
+				if ( (substring_length > line_width) && ( substring.search(/-/) != -1 ) )
+				{
+					substring = substring.split(/-/).join("-\n ");
+					substring_length = substring.split(/-/).pop().toString().length + 1;					
+				}
 
                 ret+=substring;
                 line_length+=substring_length;
@@ -453,7 +465,7 @@ package
 
         private function word_wrap_to_default(string:String):String
         {
-            const line_length_limit:int=20;
+            const line_length_limit:int=15;
             var ret:String=word_wrap(string, line_length_limit);
             return ret;
         }
@@ -472,21 +484,23 @@ package
             }
 
             var number_base:NumberBase=new NumberBase();
+			
+			var asn_name:String=data.organization_name;
+			
+			if (clean_up_organization_name) {
+	            //Strip out beginning id from organization name if necessary
+    	        asn_name = asn_name.replace(/^[A-Z]*-AS /, '');
+        	    if (asn_name == data.organization_name)
+            	{
+                	asn_name=asn_name.replace(/^([A-Z-])* /, '');
+            	}
 
-            //Strip out beginning id from organization name if necessary
-            var asn_name:String=data.organization_name.replace(/^[A-Z]*-AS /, '');
-            if (asn_name == data.organization_name)
-            {
-                asn_name=asn_name.replace(/^([A-Z-])* /, '');
-            }
-
-            //ret += "'" + asn_name + "'\n";
-
-            /*asn_name = asn_name.replace(/\s+/gm, " ");
-               var pattern:RegExp = /(.{1,25}\S)\s+/g;
-               asn_name = asn_name.replace(pattern, "|$&|$1|\n");
-             */
-
+           		 /*asn_name = asn_name.replace(/\s+/gm, " ");
+              	 var pattern:RegExp = /(.{1,25}\S)\s+/g;
+              	 asn_name = asn_name.replace(pattern, "|$&|$1|\n");
+             	*/
+			}
+			
             asn_name=word_wrap_to_default(asn_name);
             ret+="<b>";
             ret+=asn_name;
