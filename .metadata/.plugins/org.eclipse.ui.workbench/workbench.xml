@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workbench progressCount="28" version="2.0">
 <workbenchAdvisor/>
-<window height="947" width="1224" x="0" y="25">
+<window height="947" width="1228" x="80" y="25">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="160"/>
@@ -34,9 +34,9 @@
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="asn_visualization.as" partName="asn_visualization.as" path="/home/dlarochelle/flare_flex/asn_visualization/asn_visualization.as" title="asn_visualization.as" tooltip="asn_visualization/asn_visualization.as" workbook="DefaultEditorWorkbook">
+<editor focus="true" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="asn_visualization.as" partName="asn_visualization.as" path="/home/dlarochelle/flare_flex/asn_visualization/asn_visualization.as" title="asn_visualization.as" tooltip="asn_visualization/asn_visualization.as" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/asn_visualization/asn_visualization.as"/>
-<editorState selectionLength="0" selectionOffset="24592"/>
+<editorState selectionLength="0" selectionOffset="28469"/>
 </editor>
 </editors>
 <views>
@@ -108,7 +108,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
+<perspectives activePart="com.adobe.flexbuilder.navigator" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.ui.internal.ide.application.ResourcePerspective" id="org.eclipse.ui.resourcePerspective" label="Resource"/>
 <alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
