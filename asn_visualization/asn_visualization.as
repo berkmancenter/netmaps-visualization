@@ -132,7 +132,7 @@ package
                 // remove highlight on mouse out
                 function(e:SelectionEvent):void
                 {
-                    e.node.lineColor=_default_node_line_color;
+                	restore_node_line_color(e.node);
                 }));
 
             vis.controls.add(new ClickControl(NodeSprite, 1, function(evt:SelectionEvent):void
@@ -352,6 +352,10 @@ package
                 node_size/=10;
                 node_size=Math.max(node_size, 0.3);
                 nodeSprite.size=node_size;
+
+				if (nodeSprite == null)
+					throw new Error("nodeSprite cannot be null");
+					
 
                 if (o['asn'] == 'REST_OF_WORLD')
                 {
@@ -757,20 +761,27 @@ package
             return node.data.is_point_of_control;
         }
 
+	    private function restore_node_line_color(node:NodeSprite):void
+	    {
+            if (isPointOfControl(node))
+            {
+                node.lineColor=_node_point_of_control_line_color;
+            }
+            else
+            {
+                node.lineColor=_default_node_line_color;
+            }	    	
+        }
+        
         private function restore_nodes_color():void
         {
             for each (var _node:NodeSprite in vis.data.nodes)
             {
                 _node.data.highlighted=false;
                 _node.fillColor=_default_node_fill_color;
-                if (isPointOfControl(_node))
-                {
-                    _node.lineColor=_node_point_of_control_line_color;
-                }
-                else
-                {
-                    _node.lineColor=_default_node_line_color;
-                }
+                
+                restore_node_line_color(_node);
+
                 _node.focusRect=true;
                 _node.dirty();
             }
@@ -806,7 +817,7 @@ package
                 }, NodeSprite.OUT_LINKS);
 
             node.fillColor=_default_node_fill_color;
-            node.lineColor=0XFF000000;
+            restore_node_line_color(node);
 
             node.visitNodes(function(n:NodeSprite):void
                 {
