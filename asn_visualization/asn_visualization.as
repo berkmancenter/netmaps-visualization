@@ -113,6 +113,8 @@ package
 
         private var country_level_info:Object; // Country stats such as network complexity, PoC, etc.
 
+		private static const _printing_mode:Boolean=true;  // Set to true to enable hiding instruction so graphs look better printed		
+		
         public function visualize(data:Data):void
         {
             vis=new Visualization(data);
@@ -187,6 +189,11 @@ package
 
             addDetail();
             addButtons();
+            
+            if (_printing_mode)
+            {
+	            hideInfoForPrinting();
+            }
 
             addChild(vis);
             vis.update();
@@ -194,6 +201,14 @@ package
             vis.update();
         }
 
+		private function hideInfoForPrinting():void
+		{
+                _edges_toogle_container.visible = false;
+                _layout_format_toggle_container.visible = false;
+				_detail.visible = false;
+                _node_click_behavior_toggle.visible = false;            		
+		}
+		
         private function create_toggle_sprite(true_text:String, false_text:String, true_function:Function, false_function:Function, toggle_start:Boolean):Sprite
         {
             var ret:Sprite=new Sprite();
