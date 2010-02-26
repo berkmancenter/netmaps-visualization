@@ -82,7 +82,8 @@ package
         private var _default_edge_line_color:uint=0XFFCCCCCC;
         private var _default_node_fill_color:uint=0XFFCCCCCC;
         private var _default_node_line_color:uint=0XFF000000;
-        private var _node_point_of_control_line_color:uint=0XFFFF00FF;
+        private var _node_point_of_control_line_color:uint=0XFFFF0000;
+        private var _node_point_of_control_fill_color:uint=0XFFFF0000;        
 
         private var _detail:TextSprite;
 
@@ -773,12 +774,25 @@ package
             }	    	
         }
         
+        private function restore_node_fill_color(node:NodeSprite)
+        {
+        	if (isPointOfControl(node))
+        	{
+        		node.fillColor = _node_point_of_control_fill_color;
+        	}
+        	else
+        	{
+				node.fillColor=_default_node_fill_color;
+        	}
+        }
+    	
+    	
         private function restore_nodes_color():void
         {
             for each (var _node:NodeSprite in vis.data.nodes)
             {
                 _node.data.highlighted=false;
-                _node.fillColor=_default_node_fill_color;
+                restore_node_fill_color(_node);
                 
                 restore_node_line_color(_node);
 
@@ -816,12 +830,12 @@ package
                     vis.marks.setChildIndex(e, vis.marks.numChildren - 1);
                 }, NodeSprite.OUT_LINKS);
 
-            node.fillColor=_default_node_fill_color;
+            restore_node_fill_color(node);
             restore_node_line_color(node);
 
             node.visitNodes(function(n:NodeSprite):void
                 {
-                    n.fillColor=_default_node_fill_color;
+                    restore_node_fill_color(n);
                 });
 
             vis.update();
