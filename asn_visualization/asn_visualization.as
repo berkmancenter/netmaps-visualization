@@ -54,6 +54,18 @@ package
             addChild(_bar=new ProgressBar());
             _bar.bar.filters=[new DropShadowFilter(1)];
 
+ 			var print_mode_setting:Boolean=root.loaderInfo.parameters.print_mode;
+ 			
+ 			if (print_mode_setting)
+ 			{
+ 				_printing_mode = print_mode_setting;
+ 			}
+ 			else
+ 			{
+ 				_printing_mode = _printing_mode_default_setting; 				
+ 			}
+ 			
+ 			
             // load data file
             var ldr:URLLoader=new URLLoader(new URLRequest(get_json_url()));
             _bar.loadURL(ldr, function():void
@@ -113,8 +125,9 @@ package
 
         private var country_level_info:Object; // Country stats such as network complexity, PoC, etc.
 
-		private static const _printing_mode:Boolean=true;  // Set to true to enable hiding instruction so graphs look better printed		
-		
+		private static const _printing_mode_default_setting:Boolean=false;  // Set to true to enable hiding instruction so graphs look better printed		
+		private static var _printing_mode:Boolean=false; 
+				
         public function visualize(data:Data):void
         {
             vis=new Visualization(data);
