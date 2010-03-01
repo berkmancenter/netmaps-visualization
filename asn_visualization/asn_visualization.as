@@ -54,7 +54,7 @@ package
             addChild(_bar=new ProgressBar());
             _bar.bar.filters=[new DropShadowFilter(1)];
 
- 			var print_mode_setting:Boolean=root.loaderInfo.parameters.print_mode;
+ 			var print_mode_setting:int=root.loaderInfo.parameters.print_mode;
  			
  			if (print_mode_setting)
  			{
