@@ -222,6 +222,15 @@ package
                 _node_click_behavior_toggle.visible = false;            		
 		}
 		
+		
+		private function make_TextSprite(sprite_text:String)
+		{
+			var _ret:TextSprite=new TextSprite(sprite_text, null, TextSprite.DEVICE);
+			_ret.font = "Helvetica";
+			
+			return _ret;			
+		}
+		
         private function create_toggle_sprite(true_text:String, false_text:String, true_function:Function, false_function:Function, toggle_start:Boolean):Sprite
         {
             var ret:Sprite=new Sprite();
@@ -229,15 +238,16 @@ package
 
             var toggle_state:Boolean=toggle_start;
 
-            var _edges_show_text:TextSprite=new TextSprite(true_text, null, TextSprite.DEVICE);
+            var _edges_show_text:TextSprite= make_TextSprite(true_text);
 
             _edges_show_text.name="true_text";
 
-            var _edges_hide_text:TextSprite=new TextSprite(false_text, null, TextSprite.DEVICE);
+            var _edges_hide_text:TextSprite=  make_TextSprite(false_text);
 
             _edges_hide_text.name="false_text";
-
-            var _edges_slash_text:TextSprite=new TextSprite("/", null, TextSprite.DEVICE);
+            
+            var _edges_slash_text:TextSprite= make_TextSprite("/");
+            
             ret.mouseChildren=false;
 
             ret.addChild(_edges_show_text);
@@ -293,7 +303,7 @@ package
         private function addButtons():void
         {
             create_edges_toogle();
-            _node_click_behavior_toggle=new TextSprite("", null, TextSprite.DEVICE);
+            _node_click_behavior_toggle= make_TextSprite("");
             _node_click_behavior_toggle.textField.multiline=true;
             _node_click_behavior_toggle.buttonMode=false;
 
@@ -302,12 +312,12 @@ package
 
             create_layout_format_toogle(CIRCLE_LAYOUT);
 
-            _below_vis=new TextSprite("XXX", null, TextSprite.DEVICE);
+            _below_vis= make_TextSprite("XXX");
             addChild(_below_vis);
 
             var number_base:NumberBase=new NumberBase();
 
-            _country_info_box=new TextSprite("XXX", null, TextSprite.DEVICE);
+            _country_info_box= make_TextSprite("XXX");
 
             _country_info_box.textField.multiline=true;
             var country_info_string:String=country_info_string="<b>Country Summary:</b>\n";
@@ -317,6 +327,8 @@ package
             country_info_string+=number_base.formatThousands(country_level_info["ips_per_points_of_control"]) + " IPs per Point of Control";
 
             _country_info_box.htmlText=country_info_string;
+            // Work around flare bug
+            _country_info_box.textFormat = _country_info_box.textFormat;
 
             addChild(_country_info_box);
 
@@ -324,9 +336,11 @@ package
 
         private function addDetail():void
         {
-            _detail=new TextSprite("", null, TextSprite.DEVICE);
+            _detail= make_TextSprite("");
             _detail.textField.multiline=true;
             _detail.htmlText=word_wrap_to_default(DEFAULT_DETAIL_TEXT);
+	    // Work around flare bug
+            _detail.textFormat = _detail.textFormat;
             addChild(_detail);
         }
 
@@ -769,8 +783,11 @@ package
 
             if (_country_info_box)
             {
-                _country_info_box.x=vis.x + vis.width - 48;
-                _country_info_box.y=vis.y + vis.height - _country_info_box.height + 10;
+		// We need to hard position values because we can't get accurate values for the size of the text.
+                _country_info_box.x= vis.x + vis.bounds.width - 70;
+                //_country_info_box.horizontalAnchor = TextSprite.LEFT;
+               // _country_info_box.verticalAnchor   = TextSprite.TOP;
+                _country_info_box.y=vis.y + vis.height - _country_info_box.height + 5;
             }
         }
 
