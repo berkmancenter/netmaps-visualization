@@ -5,8 +5,9 @@ package
     
     import flare.analytics.graph.ShortestPaths;
     import flare.display.DirtySprite;
-    import flare.display.TextSprite;
+    import flare.display.LineSprite;
     import flare.display.RectSprite;
+    import flare.display.TextSprite;
     import flare.query.methods.update;
     import flare.vis.Visualization;
     import flare.vis.controls.ClickControl;
@@ -130,6 +131,9 @@ package
 		private static var _printing_mode:Boolean=false; 
 
 		private static var _toggle_rect_background:RectSprite;
+
+        private static var _country_info_text_border_line:LineSprite = null;
+            
 		 				
         public function visualize(data:Data):void
         {
@@ -804,6 +808,22 @@ package
                // _country_info_box.verticalAnchor   = TextSprite.TOP;
                 _country_info_box.y=vis.y + vis.height - _country_info_box.height + 5;
             }
+
+            if (!_country_info_text_border_line)
+            {
+            	//TODO it would be better to create this sprite earlier and then move it.
+            	//Unfortunately moving the Sprite doesn't seem to work 
+            	// Since the Sprite's location must be relative to other sprites, we have to wait
+            	// until everything else is in place 
+                _country_info_text_border_line = new LineSprite();
+
+                _country_info_text_border_line.x1 = _detail.x - 10;
+                _country_info_text_border_line.x2 = _detail.x - 10;
+                _country_info_text_border_line.y1 = _detail.y - 2;
+                _country_info_text_border_line.y2 = _country_info_box.y - 20;
+
+                addChild(_country_info_text_border_line);
+            }           
         }
 
         private function restore_edges_color():void
