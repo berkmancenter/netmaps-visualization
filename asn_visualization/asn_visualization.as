@@ -2,7 +2,7 @@ package
 {
 
     import com.adobe.serialization.json.JSON;
-    
+
     import flare.analytics.graph.ShortestPaths;
     import flare.display.DirtySprite;
     import flare.display.LineSprite;
@@ -18,7 +18,7 @@ package
     import flare.vis.events.SelectionEvent;
     import flare.vis.operator.layout.BundledEdgeRouter;
     import flare.vis.operator.layout.CircleLayout;
-    
+
     import flash.display.Sprite;
     import flash.events.MouseEvent;
     import flash.filters.DropShadowFilter;
@@ -27,7 +27,7 @@ package
     import flash.net.URLRequest;
     import flash.utils.Dictionary;
     import flash.utils.getDefinitionByName;
-    
+
     import mx.core.*;
     import mx.formatters.NumberBase;
     import mx.formatters.NumberBaseRoundType;
@@ -47,7 +47,7 @@ package
         private static const ON_CLICK_SHOW_PATH_TO_REST_OF_THE_WORLD:uint=1;
         private static const RADIAL_LAYOUT:uint=2;
 
-		private static const clean_up_organization_name:Boolean = false;	
+        private static const clean_up_organization_name:Boolean=false;
 
         public function asn_visualization()
         {
@@ -56,18 +56,18 @@ package
             addChild(_bar=new ProgressBar());
             _bar.bar.filters=[new DropShadowFilter(1)];
 
- 			var print_mode_setting:int=root.loaderInfo.parameters.print_mode;
- 			
- 			if (print_mode_setting)
- 			{
- 				_printing_mode = print_mode_setting;
- 			}
- 			else
- 			{
- 				_printing_mode = _printing_mode_default_setting; 				
- 			}
- 			
- 			
+            var print_mode_setting:int=root.loaderInfo.parameters.print_mode;
+
+            if (print_mode_setting)
+            {
+                _printing_mode=print_mode_setting;
+            }
+            else
+            {
+                _printing_mode=_printing_mode_default_setting;
+            }
+
+
             // load data file
             var ldr:URLLoader=new URLLoader(new URLRequest(get_json_url()));
             _bar.loadURL(ldr, function():void
@@ -97,7 +97,7 @@ package
         private var _default_node_fill_color:uint=0XFFCCCCCC;
         private var _default_node_line_color:uint=0XFF000000;
         private var _node_point_of_control_line_color:uint=0XFFFF0000;
-        private var _node_point_of_control_fill_color:uint=0XFFFF0000;        
+        private var _node_point_of_control_fill_color:uint=0XFFFF0000;
 
         private var _detail:TextSprite;
 
@@ -127,14 +127,14 @@ package
 
         private var country_level_info:Object; // Country stats such as network complexity, PoC, etc.
 
-		private static const _printing_mode_default_setting:Boolean=false;  // Set to true to enable hiding instruction so graphs look better printed		
-		private static var _printing_mode:Boolean=false; 
+        private static const _printing_mode_default_setting:Boolean=false; // Set to true to enable hiding instruction so graphs look better printed		
+        private static var _printing_mode:Boolean=false;
 
-		private static var _toggle_rect_background:RectSprite;
+        private static var _toggle_rect_background:RectSprite;
 
-        private static var _country_info_text_border_line:LineSprite = null;
-            
-		 				
+        private static var _country_info_text_border_line:LineSprite=null;
+
+
         public function visualize(data:Data):void
         {
             vis=new Visualization(data);
@@ -155,7 +155,7 @@ package
                 // remove highlight on mouse out
                 function(e:SelectionEvent):void
                 {
-                	restore_node_line_color(e.node);
+                    restore_node_line_color(e.node);
                 }));
 
             vis.controls.add(new ClickControl(NodeSprite, 1, function(evt:SelectionEvent):void
@@ -191,9 +191,9 @@ package
                     previously_clicked_node=null;
                     vis.update();
                 }));
-		
-			create_toggle_rect_background();
-				
+
+            create_toggle_rect_background();
+
             // add mouse-over details
             vis.controls.add(new HoverControl(NodeSprite, HoverControl.MOVE_TO_FRONT, function(evt:SelectionEvent):void
                 {
@@ -211,10 +211,10 @@ package
 
             addDetail();
             addButtons();
-            
+
             if (_printing_mode)
             {
-	            hideInfoForPrinting();
+                hideInfoForPrinting();
             }
 
             addChild(vis);
@@ -222,33 +222,33 @@ package
             layout();
             vis.update();
         }
-        
+
         private function create_toggle_rect_background():void
         {
-			_toggle_rect_background = new RectSprite(0,0, 600, 30);
-			_toggle_rect_background.fillColor = 0XFFF1F1F1;
-			_toggle_rect_background.lineColor = 0XFFF1F1F1;
-			_toggle_rect_background.cornerSize = 10;
-			addChild(_toggle_rect_background);
-    	}
+            _toggle_rect_background=new RectSprite(0, 0, 600, 30);
+            _toggle_rect_background.fillColor=0XFFF1F1F1;
+            _toggle_rect_background.lineColor=0XFFF1F1F1;
+            _toggle_rect_background.cornerSize=10;
+            addChild(_toggle_rect_background);
+        }
 
-		private function hideInfoForPrinting():void
-		{
-                _edges_toogle_container.visible = false;
-                _layout_format_toggle_container.visible = false;
-				_detail.visible = false;
-                _node_click_behavior_toggle.visible = false;            		
-		}
-		
-		
-		private function make_TextSprite(sprite_text:String)
-		{
-			var _ret:TextSprite=new TextSprite(sprite_text, null, TextSprite.DEVICE);
-			_ret.font = "Helvetica";
-			
-			return _ret;			
-		}
-		
+        private function hideInfoForPrinting():void
+        {
+            _edges_toogle_container.visible=false;
+            _layout_format_toggle_container.visible=false;
+            _detail.visible=false;
+            _node_click_behavior_toggle.visible=false;
+        }
+
+
+        private function make_TextSprite(sprite_text:String)
+        {
+            var _ret:TextSprite=new TextSprite(sprite_text, null, TextSprite.DEVICE);
+            _ret.font="Helvetica";
+
+            return _ret;
+        }
+
         private function create_toggle_sprite(true_text:String, false_text:String, true_function:Function, false_function:Function, toggle_start:Boolean):Sprite
         {
             var ret:Sprite=new Sprite();
@@ -256,16 +256,16 @@ package
 
             var toggle_state:Boolean=toggle_start;
 
-            var _edges_show_text:TextSprite= make_TextSprite(true_text);
+            var _edges_show_text:TextSprite=make_TextSprite(true_text);
 
             _edges_show_text.name="true_text";
 
-            var _edges_hide_text:TextSprite=  make_TextSprite(false_text);
+            var _edges_hide_text:TextSprite=make_TextSprite(false_text);
 
             _edges_hide_text.name="false_text";
-            
-            var _edges_slash_text:TextSprite= make_TextSprite("/");
-            
+
+            var _edges_slash_text:TextSprite=make_TextSprite("/");
+
             ret.mouseChildren=false;
 
             ret.addChild(_edges_show_text);
@@ -321,7 +321,7 @@ package
         private function addButtons():void
         {
             create_edges_toogle();
-            _node_click_behavior_toggle= make_TextSprite("");
+            _node_click_behavior_toggle=make_TextSprite("");
             _node_click_behavior_toggle.textField.multiline=true;
             _node_click_behavior_toggle.buttonMode=false;
 
@@ -330,12 +330,12 @@ package
 
             create_layout_format_toogle(CIRCLE_LAYOUT);
 
-            _below_vis= make_TextSprite("XXX");
+            _below_vis=make_TextSprite("XXX");
             addChild(_below_vis);
 
             var number_base:NumberBase=new NumberBase();
 
-            _country_info_box= make_TextSprite("XXX");
+            _country_info_box=make_TextSprite("XXX");
 
             _country_info_box.textField.multiline=true;
             var country_info_string:String=country_info_string="<b>Country Summary:</b>\n";
@@ -346,7 +346,7 @@ package
 
             _country_info_box.htmlText=country_info_string;
             // Work around flare bug
-            _country_info_box.textFormat = _country_info_box.textFormat;
+            _country_info_box.textFormat=_country_info_box.textFormat;
 
             addChild(_country_info_box);
 
@@ -354,11 +354,11 @@ package
 
         private function addDetail():void
         {
-            _detail= make_TextSprite("");
+            _detail=make_TextSprite("");
             _detail.textField.multiline=true;
             _detail.htmlText=word_wrap_to_default(DEFAULT_DETAIL_TEXT);
-	    // Work around flare bug
-            _detail.textFormat = _detail.textFormat;
+            // Work around flare bug
+            _detail.textFormat=_detail.textFormat;
             addChild(_detail);
         }
 
@@ -414,9 +414,9 @@ package
                 node_size=Math.max(node_size, 0.3);
                 nodeSprite.size=node_size;
 
-				if (nodeSprite == null)
-					throw new Error("nodeSprite cannot be null");
-					
+                if (nodeSprite == null)
+                    throw new Error("nodeSprite cannot be null");
+
 
                 if (o['asn'] == 'REST_OF_WORLD')
                 {
@@ -502,24 +502,24 @@ package
 
                 if (ret != "")
                 {
-                	if ((line_length + substring_length) > line_width)
-                	{
-                    	ret+='\n ';
-                    	line_length=1;
-                	}
-					else
-					{	
-                   		ret+=' ';
-                    	line_length+=1;
-                	}
+                    if ((line_length + substring_length) > line_width)
+                    {
+                        ret+='\n ';
+                        line_length=1;
+                    }
+                    else
+                    {
+                        ret+=' ';
+                        line_length+=1;
+                    }
                 }
-                
-				// Break on '-' if it's larger than 20 characters.
-				if ( (substring_length > line_width) && ( substring.search(/-/) != -1 ) )
-				{
-					substring = substring.split(/-/).join("-\n ");
-					substring_length = substring.split(/-/).pop().toString().length + 1;					
-				}
+
+                // Break on '-' if it's larger than 20 characters.
+                if ((substring_length > line_width) && (substring.search(/-/) != -1))
+                {
+                    substring=substring.split(/-/).join("-\n ");
+                    substring_length=substring.split(/-/).pop().toString().length + 1;
+                }
 
                 ret+=substring;
                 line_length+=substring_length;
@@ -549,23 +549,24 @@ package
             }
 
             var number_base:NumberBase=new NumberBase();
-			
-			var asn_name:String=data.organization_name;
-			
-			if (clean_up_organization_name) {
-	            //Strip out beginning id from organization name if necessary
-    	        asn_name = asn_name.replace(/^[A-Z]*-AS /, '');
-        	    if (asn_name == data.organization_name)
-            	{
-                	asn_name=asn_name.replace(/^([A-Z-])* /, '');
-            	}
 
-           		 /*asn_name = asn_name.replace(/\s+/gm, " ");
-              	 var pattern:RegExp = /(.{1,25}\S)\s+/g;
-              	 asn_name = asn_name.replace(pattern, "|$&|$1|\n");
-             	*/
-			}
-			
+            var asn_name:String=data.organization_name;
+
+            if (clean_up_organization_name)
+            {
+                //Strip out beginning id from organization name if necessary
+                asn_name=asn_name.replace(/^[A-Z]*-AS /, '');
+                if (asn_name == data.organization_name)
+                {
+                    asn_name=asn_name.replace(/^([A-Z-])* /, '');
+                }
+
+                /*asn_name = asn_name.replace(/\s+/gm, " ");
+                   var pattern:RegExp = /(.{1,25}\S)\s+/g;
+                   asn_name = asn_name.replace(pattern, "|$&|$1|\n");
+                 */
+            }
+
             asn_name=word_wrap_to_default(asn_name);
             ret+="<b>";
             ret+=asn_name;
@@ -764,7 +765,7 @@ package
             if (_edges_toogle_container)
             {
                 _edges_toogle_container.y=button_y_pos;
-                _edges_toogle_container.x = 3;
+                _edges_toogle_container.x=3;
             }
 
             if (_layout_format_toggle_container)
@@ -797,33 +798,33 @@ package
             _below_vis.y=vis.y + vis.bounds.height - 10;
             _below_vis.x=vis.y + vis.bounds.width / 2;
             _below_vis.text+="under vis " + _below_vis.y
-            
+
             _below_vis.visible=false;
 
             if (_country_info_box)
             {
-		// We need to hard position values because we can't get accurate values for the size of the text.
-                _country_info_box.x= vis.x + vis.bounds.width - 70;
+                // We need to hard position values because we can't get accurate values for the size of the text.
+                _country_info_box.x=vis.x + vis.bounds.width - 70;
                 //_country_info_box.horizontalAnchor = TextSprite.LEFT;
-               // _country_info_box.verticalAnchor   = TextSprite.TOP;
+                // _country_info_box.verticalAnchor   = TextSprite.TOP;
                 _country_info_box.y=vis.y + vis.height - _country_info_box.height + 5;
             }
 
             if (!_country_info_text_border_line)
             {
-            	//TODO it would be better to create this sprite earlier and then move it.
-            	//Unfortunately moving the Sprite doesn't seem to work 
-            	// Since the Sprite's location must be relative to other sprites, we have to wait
-            	// until everything else is in place 
-                _country_info_text_border_line = new LineSprite();
+                //TODO it would be better to create this sprite earlier and then move it.
+                //Unfortunately moving the Sprite doesn't seem to work 
+                // Since the Sprite's location must be relative to other sprites, we have to wait
+                // until everything else is in place 
+                _country_info_text_border_line=new LineSprite();
 
-                _country_info_text_border_line.x1 = _detail.x - 10;
-                _country_info_text_border_line.x2 = _detail.x - 10;
-                _country_info_text_border_line.y1 = _detail.y - 2;
-                _country_info_text_border_line.y2 = _country_info_box.y - 20;
+                _country_info_text_border_line.x1=_detail.x - 10;
+                _country_info_text_border_line.x2=_detail.x - 10;
+                _country_info_text_border_line.y1=_detail.y - 2;
+                _country_info_text_border_line.y2=_country_info_box.y - 20;
 
                 addChild(_country_info_text_border_line);
-            }           
+            }
         }
 
         private function restore_edges_color():void
@@ -842,8 +843,8 @@ package
             return node.data.is_point_of_control;
         }
 
-	    private function restore_node_line_color(node:NodeSprite):void
-	    {
+        private function restore_node_line_color(node:NodeSprite):void
+        {
             if (isPointOfControl(node))
             {
                 node.lineColor=_node_point_of_control_line_color;
@@ -851,29 +852,29 @@ package
             else
             {
                 node.lineColor=_default_node_line_color;
-            }	    	
+            }
         }
-        
+
         private function restore_node_fill_color(node:NodeSprite)
         {
-        	if (isPointOfControl(node))
-        	{
-        		node.fillColor = _node_point_of_control_fill_color;
-        	}
-        	else
-        	{
-				node.fillColor=_default_node_fill_color;
-        	}
+            if (isPointOfControl(node))
+            {
+                node.fillColor=_node_point_of_control_fill_color;
+            }
+            else
+            {
+                node.fillColor=_default_node_fill_color;
+            }
         }
-    	
-    	
+
+
         private function restore_nodes_color():void
         {
             for each (var _node:NodeSprite in vis.data.nodes)
             {
                 _node.data.highlighted=false;
                 restore_node_fill_color(_node);
-                
+
                 restore_node_line_color(_node);
 
                 _node.focusRect=true;
