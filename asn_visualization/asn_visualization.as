@@ -6,6 +6,7 @@ package
     import flare.analytics.graph.ShortestPaths;
     import flare.display.DirtySprite;
     import flare.display.TextSprite;
+    import flare.display.RectSprite;
     import flare.query.methods.update;
     import flare.vis.Visualization;
     import flare.vis.controls.ClickControl;
@@ -127,7 +128,9 @@ package
 
 		private static const _printing_mode_default_setting:Boolean=false;  // Set to true to enable hiding instruction so graphs look better printed		
 		private static var _printing_mode:Boolean=false; 
-				
+
+		private static var _toggle_rect_background:RectSprite;
+		 				
         public function visualize(data:Data):void
         {
             vis=new Visualization(data);
@@ -184,7 +187,9 @@ package
                     previously_clicked_node=null;
                     vis.update();
                 }));
-
+		
+			create_toggle_rect_background();
+				
             // add mouse-over details
             vis.controls.add(new HoverControl(NodeSprite, HoverControl.MOVE_TO_FRONT, function(evt:SelectionEvent):void
                 {
@@ -213,6 +218,15 @@ package
             layout();
             vis.update();
         }
+        
+        private function create_toggle_rect_background():void
+        {
+			_toggle_rect_background = new RectSprite(0,0, 600, 30);
+			_toggle_rect_background.fillColor = 0XFFF1F1F1;
+			_toggle_rect_background.lineColor = 0XFFF1F1F1;
+			_toggle_rect_background.cornerSize = 10;
+			addChild(_toggle_rect_background);
+    	}
 
 		private function hideInfoForPrinting():void
 		{
@@ -746,6 +760,7 @@ package
             if (_edges_toogle_container)
             {
                 _edges_toogle_container.y=button_y_pos;
+                _edges_toogle_container.x = 3;
             }
 
             if (_layout_format_toggle_container)
