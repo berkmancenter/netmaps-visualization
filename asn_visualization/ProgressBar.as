@@ -70,12 +70,14 @@ package
 			ldr.addEventListener(Event.COMPLETE, function(evt:Event):void {
             	this.progress = 1; // set progress bar to complete
             	var timer:Timer = new Timer(1000);
+           	
             	timer.addEventListener(TimerEvent.TIMER, function(e:Event):void
             	{
             		timer.stop(); timer = null;
             		try {
 	            		if (onComplete!=null) onComplete();
-	             	} catch (err:Error) {
+	             	} catch (err:Error) {            		
+            			var stack_Trace:String = err.getStackTrace();
 	             		error(err); 
 	             		return;
 	             	}
